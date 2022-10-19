@@ -205,7 +205,7 @@ local spr   = wibox.widget.textbox(' ')
 -- fs widget
 local fs = awful.widget.watch(".config/awesome/themes/steamburn/get-diskspace.sh", 15, 
   function(widget ,stdout)
-    widget:set_text("[Fs " .. stdout)
+    widget:set_text("[HDD " .. stdout)
   end
 )
 fs.font = theme.font
