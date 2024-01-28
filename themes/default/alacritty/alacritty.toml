@@ -1,0 +1,58 @@
+# import = ["/home/luis/.config/alacritty/themes/Everforest-Dark-Hard.toml"]
+
+[cursor]
+blink_interval = 400
+blink_timeout = 0
+
+[cursor.style]
+blinking = "always"
+shape = "Block"
+
+[font]
+size = 11.0
+
+[font.bold]
+family = "terminus"
+style = "Bold"
+
+[font.normal]
+family = "terminus"
+style = "Regular"
+
+[window]
+opacity = 0.7
+
+[window.padding]
+x = 6
+y = 4
+
+
+# Colors (Nord)
+   # Default colors
+[colors.primary]
+background= "#2E3440"
+foreground= "#D8DEE9"
+
+[colors.cursor]
+text= "#2E3440"
+cursor= "#D8DEE9"
+
+[colors.normal]
+black=   "#3B4252"
+red=     "#BF616A"
+green=   "#A3BE8C"
+yellow=  "#EBCB8B"
+blue=    "#81A1C1"
+magenta= "#B48EAD"
+cyan=    "#88C0D0"
+white=   "#E5E9F0"
+
+[colors.bright]
+black=   "#4C566A"
+red=     "#BF616A"
+green=   "#A3BE8C"
+yellow=  "#EBCB8B"
+blue=    "#81A1C1"
+magenta= "#B48EAD"
+cyan=    "#8FBCBB"
+white=   "#ECEFF4"
