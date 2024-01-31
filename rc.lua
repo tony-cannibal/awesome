@@ -152,3 +152,11 @@ require "config.signals"
 do
     awful.spawn.with_shell(beautiful.autostart)
 end
+
+collectgarbage("setpause", 160)
+collectgarbage("setstepmul", 400)
+
+gears.timer.start_new(10, function()
+    collectgarbage("step", 20000)
+    return true
+end)

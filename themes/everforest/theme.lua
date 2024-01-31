@@ -273,7 +273,7 @@ theme.mpd = lain.widget.mpd({
         elseif mpd_now.state == "pause" then
             widget:set_markup(markup.font(theme.font, "  " .. artist .. " - " .. title))
         elseif mpd_now.state == "stop" then
-            widget:set_markup(markup.font(theme.font, "栗 -- Stop --"))
+            widget:set_markup(markup.font(theme.font, "-- Stop --"))
         else
             widget:set_markup("Diconnected")
         end
@@ -309,31 +309,21 @@ theme.cal = lain.widget.cal({
 local sep = wibox.widget.textbox(' ')
 local sep2 = wibox.widget.textbox('   ')
 
--- local mynet = lain.widget.net {
---     settings = function()
---         local state = "down"
---         if net_now.state == "up" then
---             state = "Up"
---         end
---         widget:set_markup(state)
---     end
--- }
-
+-- local mynet_logo = wibox.widget.textbox(icon .. "󰈀  " .. s_end)
+local mynet_logo = wibox.widget {
+    font = icon_font,
+    markup = icon .. "󰈀  " .. s_end,
+    widget = wibox.widget.textbox
+}
 
 local mynet = lain.widget.net {
-    eth_state = "on",
+    -- eth_state = "on",
     settings = function()
         local state = net_now.state
         if state == "up" then
-            widget:set_markup(markup.fontfg(theme.font, theme.fg_accent, "󰈀 ") ..
-                markup.font(theme.font, "Up"))
-        end
-        if state == "down" then
-            widget:set_markup(markup.fontfg(theme.font, theme.bg_urgent, "󰈀 ") ..
-                markup.font(theme.font, "Net:Down"))
-        end
-        if state == nil then
-            widget:set_markup(markup.font(theme.font, "Net:Loading"))
+            widget:set_markup(markup.font(theme.font, "Up"))
+        else
+            widget:set_markup(markup.fontfg(theme.font, theme.bg_urgent, "Down"))
         end
     end
 }
@@ -387,7 +377,8 @@ function theme.at_screen_connect(s)
             sep,
             s.mytaglist,
             sep2,
-            mynet,
+            mynet_logo,
+            mynet.widget,
         },
         -- s.mytasklist, -- Middle widget
         theme.mpd.widget,
