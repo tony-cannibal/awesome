@@ -3,6 +3,7 @@ local awful = require("awful")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 local beautiful = require("beautiful")
+local bling = require("bling")
 
 local custom_popup = hotkeys_popup.widget.new({
     font = 'terminus 14',
@@ -11,15 +12,31 @@ local custom_popup = hotkeys_popup.widget.new({
     height = 600
 })
 
+local width = 1500
+
+local x_pos = math.floor((1920 - width) / 2)
+
+local term_scratch = bling.module.scratchpad {
+    command                 = beautiful.terminal .. " --class spad -e ncmpcpp",   -- How to spawn the scratchpad
+    rule                    = { instance = "spad" },                              -- The rule that the scratchpad will be searched by
+    sticky                  = true,                                               -- Whether the scratchpad should be sticky
+    autoclose               = true,                                               -- Whether it should hide itself when losing focus
+    floating                = true,                                               -- Whether it should be floating (MUST BE TRUE FOR ANIMATIONS)
+    geometry                = { x = x_pos, y = 90, height = 900, width = width }, -- The geometry in a floating state
+    reapply                 = true,                                               -- Whether all those properties should be reapplied on every new opening of the scratchpad (MUST BE TRUE FOR ANIMATIONS)
+    dont_focus_before_close = false,                                              -- When set to true, the scratchpad will be closed by the toggle function regardless of whether its focused or not. When set to false, the toggle function will first bring the scratchpad into focus and only close it on a second call
+    rubato                  = { x = anim_x, y = anim_y }                          -- Optional. This is how you can pass in the rubato tables for animations. If you don't want animations, you can ignore this option.
+}
+
 -- {{{ Key bindings
 globalkeys = gears.table.join(
 -- awful.key({ modkey, }, "s", hotkeys_popup.show_help,
 --     { description = "show help", group = "awesome" }),
-    awful.key({ modkey, }, "s", function() custom_popup:show_help() end,
+    awful.key({ modkey, }, "d", function() custom_popup:show_help() end,
         { description = "show help", group = "awesome" }),
-    awful.key({ modkey, }, "Left", awful.tag.viewprev,
+    awful.key({ modkey, }, "bracketleft", awful.tag.viewprev,
         { description = "view previous", group = "tag" }),
-    awful.key({ modkey, }, "Right", awful.tag.viewnext,
+    awful.key({ modkey, }, "bracketright", awful.tag.viewnext,
         { description = "view next", group = "tag" }),
     awful.key({ modkey, }, "Escape", awful.tag.history.restore,
         { description = "go back", group = "tag" }),
@@ -113,7 +130,11 @@ globalkeys = gears.table.join(
         { description = "Power Menu", group = "launcher" }),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
-        { description = "show the menubar", group = "launcher" })
+        { description = "show the menubar", group = "launcher" }),
+    awful.key({ modkey }, "s", function() term_scratch:toggle() end,
+        { description = "Toggle Scratchpad", group = "launcher" }),
+    awful.key({ modkey }, "b", function() awful.spawn("firefox") end,
+        { description = "Toggle Scratchpad", group = "launcher" })
 )
 
 clientkeys = gears.table.join(

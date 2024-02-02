@@ -223,15 +223,18 @@ theme.volwidget:buttons(gears.table.join(
 
 
 -- {{{ Mem Widget
-theme.mem_icon = wibox.widget.textbox(icon .. ' ' .. s_end)
-theme.mem_icon.font = icon_font
+theme.mem_icon                 = wibox.widget {
+    font = "Iosevka Nerd Font 11",
+    markup = icon .. '󰘚 ' .. s_end,
+    widget = wibox.widget.textbox,
+}
 
+theme.mem_icon_widget          = wibox.container.margin(theme.mem_icon, dpi(6), dpi(2), dpi(4), dpi(4))
 
 theme.memory, theme.mem_signal = awful.widget.watch(theme.scripts .. "get-mem.sh", 2,
     function(widget, stdout)
         widget:set_markup(markup.font(theme.font, stdout))
     end)
-
 
 theme.memory:buttons(gears.table.join(
     awful.button({}, 1, function()
@@ -239,13 +242,10 @@ theme.memory:buttons(gears.table.join(
     end))
 )
 
--- theme.memory.font = theme.font
 -- }}}
 
 
 -- {{{ Filesystem Widget
--- theme.file_icon = wibox.widget.textbox(icon .. ' ' .. s_end)
--- theme.file_icon.font = icon_font
 theme.file_icon        = wibox.widget {
     font = icon_font,
     markup = icon .. ' ' .. s_end,
@@ -263,19 +263,22 @@ theme.space.font = theme.font
 
 -- }}}
 
+-- {{{ Mpd Widget
 theme.mpd = lain.widget.mpd({
     timeout = 0.2,
     settings = function()
         local artist = mpd_now.artist
         local title = mpd_now.title
         if mpd_now.state == "play" then
-            widget:set_markup(markup.font(theme.font, "  " .. artist .. " - " .. title))
+            widget:set_markup(markup.fontcolor(theme.font, theme.bg_normal, theme.fg_accent,
+                "   " .. artist .. " - " .. title .. " "))
         elseif mpd_now.state == "pause" then
-            widget:set_markup(markup.font(theme.font, "  " .. artist .. " - " .. title))
+            widget:set_markup(markup.fontcolor(theme.font, theme.bg_normal, theme.fg_accent,
+                "   " .. artist .. " - " .. title .. " "))
         elseif mpd_now.state == "stop" then
-            widget:set_markup(markup.font(theme.font, "-- Stop --"))
+            widget:set_markup(markup.fontcolor(theme.font, theme.bg_normal, theme.fg_accent, " -- Stop -- "))
         else
-            widget:set_markup("Diconnected")
+            widget:set_markup(markup.font(theme.font, " Diconnected "))
         end
     end
 })
@@ -290,6 +293,9 @@ theme.mpd.widget:buttons(gears.table.join(
         theme.mpd.update()
     end))
 )
+
+local mpd_bg = wibox.container.background(theme.mpd.widget, theme.fg_accent)
+-- }}}
 
 -- {{ Clock Widget
 theme.clock_icon = wibox.widget.textbox(icon .. ' ' .. s_end)
@@ -306,10 +312,9 @@ theme.cal = lain.widget.cal({
 })
 -- }}
 
-local sep = wibox.widget.textbox(' ')
-local sep2 = wibox.widget.textbox('   ')
 
--- local mynet_logo = wibox.widget.textbox(icon .. "󰈀  " .. s_end)
+
+-- {{{ Net Widget
 local mynet_logo = wibox.widget {
     font = icon_font,
     markup = icon .. "󰈀  " .. s_end,
@@ -326,6 +331,39 @@ local mynet = lain.widget.net {
             widget:set_markup(markup.fontfg(theme.font, theme.bg_urgent, "Down"))
         end
     end
+}
+-- }}}
+
+-- {{{ Cpu Usage Widget
+local cpu_icon = wibox.widget {
+    font = icon_font,
+    markup = icon .. "  " .. s_end,
+    widget = wibox.widget.textbox
+}
+
+local cpu = lain.widget.cpu {
+    timeout = 1,
+    settings = function()
+        widget:set_markup(markup.font(theme.font, cpu_now.usage .. "%"))
+    end
+}
+-- }}}
+
+local sep = wibox.widget.textbox(' ')
+local sep2 = wibox.widget.textbox('   ')
+
+
+local right = wibox.widget {
+    font = "Iosevka Nerd Font 15",
+    markup = icon .. "  " .. s_end,
+    widget = wibox.widget.textbox
+}
+
+
+local left = wibox.widget {
+    font = "Iosevka Nerd Font 15",
+    markup = icon .. "" .. s_end,
+    widget = wibox.widget.textbox
 }
 
 local function update_txt_layoutbox(s)
@@ -379,25 +417,35 @@ function theme.at_screen_connect(s)
             sep2,
             mynet_logo,
             mynet.widget,
-        },
-        -- s.mytasklist, -- Middle widget
-        theme.mpd.widget,
-        { -- Right widgets
-            layout = wibox.layout.fixed.horizontal,
+            sep2,
             theme.file_icon_widget,
             theme.space,
+        },
+        {
+            -- s.mytasklist, -- Middle widget
+            layout = wibox.layout.fixed.horizontal,
+            left,
+            -- theme.mpd.widget,
+            mpd_bg,
+            right
+        },
+        { -- Right widgets
+            layout = wibox.layout.fixed.horizontal,
+            cpu_icon,
+            cpu.widget,
             sep2,
-            theme.mem_icon,
+            theme.mem_icon_widget,
             theme.memory,
             sep2,
             vol_icon,
             theme.volwidget,
-            sep,
+            sep2,
             theme.clock_icon,
             mytextclock,
             wibox.widget.systray(),
             sep,
             s.mylayoutbox,
+            sep
         },
     }
 end
