@@ -278,7 +278,7 @@ theme.mpd = lain.widget.mpd({
         elseif mpd_now.state == "stop" then
             widget:set_markup(markup.fontcolor(theme.font, theme.bg_normal, theme.fg_accent, " -- Stop -- "))
         else
-            widget:set_markup(markup.font(theme.font, " Diconnected "))
+            widget:set_markup(markup.fontcolor(theme.font, theme.bg_normal, theme.fg_accent, " Diconnected "))
         end
     end
 })
