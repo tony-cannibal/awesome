@@ -271,10 +271,10 @@ theme.mpd = lain.widget.mpd({
         local title = mpd_now.title
         if mpd_now.state == "play" then
             widget:set_markup(markup.fontcolor(theme.font, theme.bg_normal, theme.fg_accent,
-                "   " .. artist .. " - " .. title .. " "))
+                "   " .. artist .. " - " .. title .. " "))
         elseif mpd_now.state == "pause" then
             widget:set_markup(markup.fontcolor(theme.font, theme.bg_normal, theme.fg_accent,
-                "   " .. artist .. " - " .. title .. " "))
+                "   " .. artist .. " - " .. title .. " "))
         elseif mpd_now.state == "stop" then
             widget:set_markup(markup.fontcolor(theme.font, theme.bg_normal, theme.fg_accent, " -- Stop -- "))
         else

@@ -69,5 +69,9 @@ awful.rules.rules = {
         rule = { class = "Nemo" },
         properties = { screen = 1, tag = beautiful.tagnames[3] }
     },
+    {
+        rule = { class = "Deluge-gtk" },
+        properties = { screen = 1, tag = beautiful.tagnames[4] }
+    },
 }
 -- }}}
