@@ -248,7 +248,7 @@ theme.memory:buttons(gears.table.join(
 -- {{{ Filesystem Widget
 theme.file_icon        = wibox.widget {
     font = icon_font,
-    markup = icon .. ' ' .. s_end,
+    markup = icon .. '󰋊 ' .. s_end,
     widget = wibox.widget.textbox,
 }
 
@@ -271,7 +271,7 @@ theme.mpd = lain.widget.mpd({
         local title = mpd_now.title
         if mpd_now.state == "play" then
             widget:set_markup(markup.fontcolor(theme.font, theme.bg_normal, theme.fg_accent,
-                "   " .. artist .. " - " .. title .. " "))
+                " 󰏤  " .. artist .. " - " .. title .. " "))
         elseif mpd_now.state == "pause" then
             widget:set_markup(markup.fontcolor(theme.font, theme.bg_normal, theme.fg_accent,
                 "   " .. artist .. " - " .. title .. " "))
@@ -298,7 +298,7 @@ local mpd_bg = wibox.container.background(theme.mpd.widget, theme.fg_accent)
 -- }}}
 
 -- {{ Clock Widget
-theme.clock_icon = wibox.widget.textbox(icon .. ' ' .. s_end)
+theme.clock_icon = wibox.widget.textbox(icon .. ' ' .. s_end)
 theme.clock_icon.font = icon_font
 local mytextclock = wibox.widget.textclock("%I:%M %p ")
 mytextclock.font = theme.font
